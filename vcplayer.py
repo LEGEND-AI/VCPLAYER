@@ -4,18 +4,18 @@ import logging
 from telethon import TelegramClient
 from telethon.sessions import StringSession
 from telethon.tl.types import User
-from userbot import Config, catub
-from userbot.core.managers import edit_delete, edit_or_reply
+from Legendbot import Config, legend
+from Legendbot.core.managers import eod, eor
 
 from .helper.stream_helper import Stream
 from .helper.tg_downloader import tg_dl
-from .helper.vcp_helper import CatVC
+from .helper.vcp_helper import LegendVC
 
-plugin_category = "extra"
+menu_category = "extra"
 
 logging.getLogger("pytgcalls").setLevel(logging.ERROR)
 
-OWNER_ID = catub.uid
+OWNER_ID = legend.uid
 
 vc_session = Config.VC_SESSION
 
@@ -24,10 +24,10 @@ if vc_session:
         StringSession(vc_session), Config.APP_ID, Config.API_HASH
     )
 else:
-    vc_client = catub
+    vc_client = legend 
 
 vc_client.__class__.__module__ = "telethon.client.telegramclient"
-vc_player = CatVC(vc_client)
+vc_player = LegendVC(vc_client)
 
 asyncio.create_task(vc_player.start())
 
@@ -40,7 +40,7 @@ async def handler(_, update):
 ALLOWED_USERS = set()
 
 
-@catub.cat_cmd(
+@legend.legend_cmd(
     pattern="joinvc ?(\S+)? ?(?:-as)? ?(\S+)?",
     command=("joinvc", plugin_category),
     info={
@@ -69,7 +69,7 @@ async def joinVoicechat(event):
     chat = event.pattern_match.group(1)
     joinas = event.pattern_match.group(2)
 
-    await edit_or_reply(event, "Joining VC ......")
+    await eor(event, "Joining VC ......")
 
     if chat and chat != "-as":
         if chat.strip("-").isnumeric():
@@ -78,31 +78,31 @@ async def joinVoicechat(event):
         chat = event.chat_id
 
     if vc_player.app.active_calls:
-        return await edit_delete(
+        return await eod(
             event, f"You have already Joined in {vc_player.CHAT_NAME}"
         )
 
     try:
-        vc_chat = await catub.get_entity(chat)
+        vc_chat = await legend.get_entity(chat)
     except Exception as e:
-        return await edit_delete(event, f'ERROR : \n{e or "UNKNOWN CHAT"}')
+        return await eod(event, f'ERROR : \n{e or "UNKNOWN CHAT"}')
 
     if isinstance(vc_chat, User):
-        return await edit_delete(
+        return await eod(
             event, "Voice Chats are not available in Private Chats"
         )
 
     if joinas and not vc_chat.username:
-        await edit_or_reply(
+        await eor(
             event, "Unable to use Join as in Private Chat. Joining as Yourself..."
         )
         joinas = False
 
     out = await vc_player.join_vc(vc_chat, joinas)
-    await edit_delete(event, out)
+    await eod(event, out)
 
 
-@catub.cat_cmd(
+@legend.legend_cmd(
     pattern="leavevc",
     command=("leavevc", plugin_category),
     info={
@@ -119,15 +119,15 @@ async def joinVoicechat(event):
 async def leaveVoicechat(event):
     "To leave a Voice Chat."
     if vc_player.CHAT_ID:
-        await edit_or_reply(event, "Leaving VC ......")
+        await eor(event, "Leaving VC ......")
         chat_name = vc_player.CHAT_NAME
         await vc_player.leave_vc()
-        await edit_delete(event, f"Left VC of {chat_name}")
+        await eod(event, f"Left VC of {chat_name}")
     else:
-        await edit_delete(event, "Not yet joined any VC")
+        await eod(event, "Not yet joined any VC")
 
 
-@catub.cat_cmd(
+@legend.legend_cmd(
     pattern="playlist",
     command=("playlist", plugin_category),
     info={
@@ -143,21 +143,21 @@ async def leaveVoicechat(event):
 )
 async def get_playlist(event):
     "To Get all playlist for Voice Chat."
-    await edit_or_reply(event, "Fetching Playlist ......")
+    await eor(event, "Fetching Playlist ......")
     playl = vc_player.PLAYLIST
     if not playl:
-        await edit_delete(event, "Playlist empty", time=10)
+        await eod(event, "Playlist empty", time=10)
     else:
-        cat = ""
+        lol = ""
         for num, item in enumerate(playl, 1):
             if item["stream"] == Stream.audio:
-                cat += f"{num}. 🔉  `{item['title']}`\n"
+                lol += f"{num}. 🔉  `{item['title']}`\n"
             else:
-                cat += f"{num}. 📺  `{item['title']}`\n"
-        await edit_delete(event, f"**Playlist:**\n\n{cat}\n**Enjoy the show**")
+                lol += f"{num}. 📺  `{item['title']}`\n"
+        await eod(event, f"**Playlist:**\n\n{cat}\n**Enjoy the show**")
 
 
-@catub.cat_cmd(
+@legend.legend_cmd(
     pattern="vplay ?(-f)? ?([\S ]*)?",
     command=("vplay", plugin_category),
     info={
@@ -185,23 +185,23 @@ async def play_video(event):
     if input_str == "" and event.reply_to_msg_id:
         input_str = await tg_dl(event)
     if not input_str:
-        return await edit_delete(
+        return await eod(
             event, "Please Provide a media file to stream on VC", time=20
         )
     if not vc_player.CHAT_ID:
-        return await edit_or_reply(event, "Join a VC and use play command")
+        return await eor(event, "Join a VC and use play command")
     if not input_str:
-        return await edit_or_reply(event, "No Input to play in vc")
-    await edit_or_reply(event, "Playing in VC ......")
+        return await eor(event, "No Input to play in vc")
+    await eor(event, "Playing in VC ......")
     if flag:
         resp = await vc_player.play_song(input_str, Stream.video, force=True)
     else:
         resp = await vc_player.play_song(input_str, Stream.video, force=False)
     if resp:
-        await edit_delete(event, resp, time=30)
+        await eod(event, resp, time=30)
 
 
-@catub.cat_cmd(
+@legend.legend_cmd(
     pattern="play ?(-f)? ?([\S ]*)?",
     command=("play", plugin_category),
     info={
@@ -229,23 +229,23 @@ async def play_audio(event):
     if input_str == "" and event.reply_to_msg_id:
         input_str = await tg_dl(event)
     if not input_str:
-        return await edit_delete(
+        return await eod(
             event, "Please Provide a media file to stream on VC", time=20
         )
     if not vc_player.CHAT_ID:
-        return await edit_or_reply(event, "Join a VC and use play command")
+        return await eor(event, "Join a VC and use play command")
     if not input_str:
-        return await edit_or_reply(event, "No Input to play in vc")
-    await edit_or_reply(event, "Playing in VC ......")
+        return await eor(event, "No Input to play in vc")
+    await eor(event, "Playing in VC ......")
     if flag:
         resp = await vc_player.play_song(input_str, Stream.audio, force=True)
     else:
         resp = await vc_player.play_song(input_str, Stream.audio, force=False)
     if resp:
-        await edit_delete(event, resp, time=30)
+        await eod(event, resp, time=30)
 
 
-@catub.cat_cmd(
+@legend.legend_cmd(
     pattern="pause",
     command=("pause", plugin_category),
     info={
@@ -261,12 +261,12 @@ async def play_audio(event):
 )
 async def pause_stream(event):
     "To Pause a stream on Voice Chat."
-    await edit_or_reply(event, "Pausing VC ......")
+    await eor(event, "Pausing VC ......")
     res = await vc_player.pause()
-    await edit_delete(event, res, time=30)
+    await eod(event, res, time=30)
 
 
-@catub.cat_cmd(
+@legend.legend_cmd(
     pattern="resume",
     command=("resume", plugin_category),
     info={
@@ -282,12 +282,12 @@ async def pause_stream(event):
 )
 async def resume_stream(event):
     "To Resume a stream on Voice Chat."
-    await edit_or_reply(event, "Resuming VC ......")
+    await eor(event, "Resuming VC ......")
     res = await vc_player.resume()
-    await edit_delete(event, res, time=30)
+    await eod(event, res, time=30)
 
 
-@catub.cat_cmd(
+@legend.legend_cmd(
     pattern="skip",
     command=("skip", plugin_category),
     info={
@@ -303,13 +303,13 @@ async def resume_stream(event):
 )
 async def skip_stream(event):
     "To Skip currently playing stream on Voice Chat."
-    await edit_or_reply(event, "Skiping Stream ......")
+    await eor(event, "Skiping Stream ......")
     res = await vc_player.skip()
-    await edit_delete(event, res, time=30)
+    await eod(event, res, time=30)
 
 
 """
-@catub.cat_cmd(
+@legend.legend_cmd(
     pattern="a(?:llow)?vc ?([\d ]*)?",
     command=("allowvc", plugin_category),
     info={
@@ -330,12 +330,12 @@ async def allowvc(event):
         reply = await event.get_reply_message()
         user_id = [reply.from_id]
     if not user_id:
-        return await edit_delete(event, "Whom should i Add")
+        return await eod(event, "Whom should i Add")
     ALLOWED_USERS.update(user_id)
-    return await edit_delete(event, "Added User to Allowed List")
+    return await eod(event, "Added User to Allowed List")
 
 
-@catub.cat_cmd(
+@legend.legend_cmd(
     pattern="d(?:isallow)?vc ?([\d ]*)?",
     command=("disallowvc", plugin_category),
     info={
@@ -356,14 +356,14 @@ async def disallowvc(event):
         reply = await event.get_reply_message()
         user_id = [reply.from_id]
     if not user_id:
-        return await edit_delete(event, "Whom should i remove")
+        return await eod(event, "Whom should i remove")
     ALLOWED_USERS.difference_update(user_id)
-    return await edit_delete(event, "Removed User to Allowed List")
+    return await eod(event, "Removed User to Allowed List")
 
 
-@catub.on(
+@legend.on(
     events.NewMessage(outgoing=True, pattern=f"{tr}(speak|sp)(h|j)?(?:\s|$)([\s\S]*)")
-)  #only for catub client
+)  #only for legend client
 async def speak(event):
     "Speak in vc"
     r = event.pattern_match.group(2)
@@ -409,7 +409,7 @@ async def speak(event):
         try:
             t_response = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
         except (subprocess.CalledProcessError, NameError, FileNotFoundError) as exc:
-            await edit_or_reply(event, str(exc))
+            await eor(event, str(exc))
         else:
             os.remove(file)
             file = file + ".opus"
@@ -417,5 +417,5 @@ async def speak(event):
         await event.delete()
         os.remove(file)
     except Exception as e:
-         await edit_or_reply(event, f"**Error:**\n`{e}`")
+         await eor(event, f"**Error:**\n`{e}`")
 """
