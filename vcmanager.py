@@ -4,7 +4,8 @@ from telethon.tl.types import Channel, Chat, User
 from Legendbot import legend
 from Legendbot.bot.core.managers import eod, eor
 from Legendbot.helpers.utils import mentionuser
-
+edit_or_reply = eor
+edit_delete = eod
 menu_category = "extra"
 
 
