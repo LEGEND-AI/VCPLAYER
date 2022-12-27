@@ -42,7 +42,7 @@ ALLOWED_USERS = set()
 
 @legend.legend_cmd(
     pattern="joinvc ?(\S+)? ?(?:-as)? ?(\S+)?",
-    command=("joinvc", plugin_category),
+    command=("joinvc", menu_category),
     info={
         "header": "To join a Voice Chat.",
         "description": "To join or create and join a Voice Chat",
@@ -104,7 +104,7 @@ async def joinVoicechat(event):
 
 @legend.legend_cmd(
     pattern="leavevc",
-    command=("leavevc", plugin_category),
+    command=("leavevc", menu_category),
     info={
         "header": "To leave a Voice Chat.",
         "description": "To leave a Voice Chat",
@@ -129,7 +129,7 @@ async def leaveVoicechat(event):
 
 @legend.legend_cmd(
     pattern="playlist",
-    command=("playlist", plugin_category),
+    command=("playlist", menu_category),
     info={
         "header": "To Get all playlist.",
         "description": "To Get all playlist for Voice Chat.",
@@ -159,7 +159,7 @@ async def get_playlist(event):
 
 @legend.legend_cmd(
     pattern="vplay ?(-f)? ?([\S ]*)?",
-    command=("vplay", plugin_category),
+    command=("vplay", menu_category),
     info={
         "header": "To Play a media as video on VC.",
         "description": "To play a video stream on VC.",
@@ -203,7 +203,7 @@ async def play_video(event):
 
 @legend.legend_cmd(
     pattern="play ?(-f)? ?([\S ]*)?",
-    command=("play", plugin_category),
+    command=("play", menu_category),
     info={
         "header": "To Play a media as audio on VC.",
         "description": "To play a audio stream on VC.",
@@ -247,7 +247,7 @@ async def play_audio(event):
 
 @legend.legend_cmd(
     pattern="pause",
-    command=("pause", plugin_category),
+    command=("pause", menu_category),
     info={
         "header": "To Pause a stream on Voice Chat.",
         "description": "To Pause a stream on Voice Chat",
@@ -268,7 +268,7 @@ async def pause_stream(event):
 
 @legend.legend_cmd(
     pattern="resume",
-    command=("resume", plugin_category),
+    command=("resume", menu_category),
     info={
         "header": "To Resume a stream on Voice Chat.",
         "description": "To Resume a stream on Voice Chat",
@@ -289,7 +289,7 @@ async def resume_stream(event):
 
 @legend.legend_cmd(
     pattern="skip",
-    command=("skip", plugin_category),
+    command=("skip", menu_category),
     info={
         "header": "To Skip currently playing stream on Voice Chat.",
         "description": "To Skip currently playing stream on Voice Chat.",
@@ -311,7 +311,7 @@ async def skip_stream(event):
 """
 @legend.legend_cmd(
     pattern="a(?:llow)?vc ?([\d ]*)?",
-    command=("allowvc", plugin_category),
+    command=("allowvc", menu_category),
     info={
         "header": "To allow a user to control VC.",
         "description": "To allow a user to controll VC.",
