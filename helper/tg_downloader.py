@@ -7,9 +7,9 @@ from datetime import datetime
 
 from telethon.tl import types
 from telethon.utils import get_extension
-from userbot.Config import Config
-from userbot.core.managers import edit_or_reply
-from userbot.helpers import progress
+from Legendbot.Config import Config
+from Legendbot.core.managers import eor
+from Legendbot.helpers import progress
 
 NAME = "untitled"
 
@@ -22,7 +22,8 @@ async def _get_file_name(path: pathlib.Path, full: bool = True) -> str:
 
 async def tg_dl(event):
     "To download the replied telegram file"
-    mone = await edit_or_reply(event, "`Downloading....`")
+    mone = await eor
+(event, "`Downloading....`")
     name = NAME
     path = None
     if not os.path.isdir(Config.TMP_DOWNLOAD_DIRECTORY):
