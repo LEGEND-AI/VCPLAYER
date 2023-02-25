@@ -22,8 +22,7 @@ async def _get_file_name(path: pathlib.Path, full: bool = True) -> str:
 
 async def tg_dl(event):
     "To download the replied telegram file"
-    mone = await eor
-(event, "`Downloading....`")
+    mone = await eor(event, "`Downloading....`")
     name = NAME
     path = None
     if not os.path.isdir(Config.TMP_DOWNLOAD_DIRECTORY):
