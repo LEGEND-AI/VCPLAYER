@@ -4,8 +4,6 @@ from telethon.tl.types import Channel, Chat, User
 from Legendbot import legend
 from Legendbot.bot.core.managers import eod, eor
 from Legendbot.helpers.utils import mentionuser
-edit_or_reply = eor
-edit_delete = eod
 menu_category = "extra"
 
 
@@ -154,7 +152,7 @@ async def info_vc(event):
         for user in call_details.users:
             nam = f"{user.first_name or ''} {user.last_name or ''}"
             grp_call += f"  ● {mentionuser(nam,user.id)} - `{user.id}`\n"
-    await edit_or_reply(event, grp_call)
+    await eor(event, grp_call)
 
 
 @legend.legend_cmd(
