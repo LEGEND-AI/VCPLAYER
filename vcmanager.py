@@ -1,7 +1,7 @@
 from Legendbot import legend
 from Legendbot.core.managers import eod, eor
-from Legendbot.helpers.utils import mentionuser
 from Legendbot.helpers.functions.musictool import chat_vc_checker, parse_entity
+from Legendbot.helpers.utils import mentionuser
 from telethon import functions
 from telethon.errors import ChatAdminRequiredError, UserAlreadyInvitedError
 from telethon.tl.types import User
