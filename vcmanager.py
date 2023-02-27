@@ -18,6 +18,8 @@ menu_category = "extra"
         "usage": "{tr}vcstart",
         "examples": "{tr}vcstart",
     },
+    groups_only=True,
+    require_admin=True,
 )
 async def start_vc(event):
     "To start a Voice Chat."
@@ -46,6 +48,8 @@ async def start_vc(event):
         "usage": "{tr}vcend",
         "examples": "{tr}vcend",
     },
+    groups_only=True,
+    require_admin=True,
 )
 async def end_vc(event):
     "To end a Voice Chat."
@@ -71,6 +75,7 @@ async def end_vc(event):
             "{tr}vcinv userid1 userid2",
         ],
     },
+    groups_only=True,
 )
 async def inv_vc(event):
     "To invite users to vc."
@@ -82,7 +87,7 @@ async def inv_vc(event):
         return
     if not users:
         if not reply:
-            return await eod("Whom Should i invite")
+            return await eod(event, "Whom Should i invite")
         users = reply.from_id
     await eor(event, "Inviting User to Group Call")
     entities = str(users).split(" ")
