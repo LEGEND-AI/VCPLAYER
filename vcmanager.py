@@ -1,13 +1,14 @@
-from telethon import functions
-from telethon.errors import ChatAdminRequiredError, UserAlreadyInvitedError
-from telethon.tl.types import Channel, Chat, User
-
 from Legendbot import legend
 from Legendbot.core.managers import eod, eor
 from Legendbot.helpers.utils import mentionuser
+from telethon import functions
+from telethon.errors import ChatAdminRequiredError, UserAlreadyInvitedError
+from telethon.tl.types import User
+
 menu_category = "extra"
 
-from Legendbot.helpers.functions import chat_vc_checker, get_group_call, parse_entity
+from Legendbot.helpers.functions import chat_vc_checker, parse_entity
+
 
 @legend.legend_cmd(
     pattern="vcstart",

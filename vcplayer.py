@@ -1,11 +1,11 @@
 import asyncio
 import logging
 
+from Legendbot import Config, legend
+from Legendbot.core.managers import eod, eor
 from telethon import TelegramClient
 from telethon.sessions import StringSession
 from telethon.tl.types import User
-from Legendbot import Config, legend
-from Legendbot.core.managers import eod, eor
 
 from .helper.stream_helper import Stream
 from .helper.tg_downloader import tg_dl
@@ -24,7 +24,7 @@ if vc_session:
         StringSession(vc_session), Config.APP_ID, Config.API_HASH
     )
 else:
-    vc_client = legend 
+    vc_client = legend
 
 vc_client.__class__.__module__ = "telethon.client.telegramclient"
 vc_player = LegendVC(vc_client)
@@ -78,9 +78,7 @@ async def joinVoicechat(event):
         chat = event.chat_id
 
     if vc_player.app.active_calls:
-        return await eod(
-            event, f"You have already Joined in {vc_player.CHAT_NAME}"
-        )
+        return await eod(event, f"You have already Joined in {vc_player.CHAT_NAME}")
 
     try:
         vc_chat = await legend.get_entity(chat)
@@ -88,9 +86,7 @@ async def joinVoicechat(event):
         return await eod(event, f'ERROR : \n{e or "UNKNOWN CHAT"}')
 
     if isinstance(vc_chat, User):
-        return await eod(
-            event, "Voice Chats are not available in Private Chats"
-        )
+        return await eod(event, "Voice Chats are not available in Private Chats")
 
     if joinas and not vc_chat.username:
         await eor(
@@ -185,9 +181,7 @@ async def play_video(event):
     if input_str == "" and event.reply_to_msg_id:
         input_str = await tg_dl(event)
     if not input_str:
-        return await eod(
-            event, "Please Provide a media file to stream on VC", time=20
-        )
+        return await eod(event, "Please Provide a media file to stream on VC", time=20)
     if not vc_player.CHAT_ID:
         return await eor(event, "Join a VC and use play command")
     if not input_str:
@@ -229,9 +223,7 @@ async def play_audio(event):
     if input_str == "" and event.reply_to_msg_id:
         input_str = await tg_dl(event)
     if not input_str:
-        return await eod(
-            event, "Please Provide a media file to stream on VC", time=20
-        )
+        return await eod(event, "Please Provide a media file to stream on VC", time=20)
     if not vc_player.CHAT_ID:
         return await eor(event, "Join a VC and use play command")
     if not input_str:

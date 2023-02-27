@@ -1,9 +1,9 @@
 import re
 from enum import Enum
 
+from Legendbot.utils import runcmd
 from requests.exceptions import MissingSchema
 from requests.models import PreparedRequest
-from Legendbot.utils import runcmd
 from yt_dlp import YoutubeDL
 
 

@@ -5,11 +5,11 @@ import pathlib
 import time
 from datetime import datetime
 
-from telethon.tl import types
-from telethon.utils import get_extension
 from Legendbot.Config import Config
 from Legendbot.core.managers import eor
 from Legendbot.helpers import progress
+from telethon.tl import types
+from telethon.utils import get_extension
 
 NAME = "untitled"
 
