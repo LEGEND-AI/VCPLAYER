@@ -1,37 +1,13 @@
 from telethon import functions
 from telethon.errors import ChatAdminRequiredError, UserAlreadyInvitedError
 from telethon.tl.types import Channel, Chat, User
+
 from Legendbot import legend
-from Legendbot.bot.core.managers import eod, eor
+from Legendbot.core.managers import eod, eor
 from Legendbot.helpers.utils import mentionuser
 menu_category = "extra"
 
-
-async def get_group_call(chat):
-    if isinstance(chat, Channel):
-        result = await legend(functions.channels.GetFullChannelRequest(channel=chat))
-    elif isinstance(chat, Chat):
-        result = await legend(functions.messages.GetFullChatRequest(chat_id=chat.id))
-    return result.full_chat.call
-
-
-async def chat_vc_checker(event, chat, edits=True):
-    if isinstance(chat, User):
-        await eod(event, "Voice Chats are not available in Private Chats")
-        return None
-    result = await get_group_call(chat)
-    if not result:
-        if edits:
-            await eod(event, "No Group Call in this chat")
-        return None
-    return result
-
-
-async def parse_entity(entity):
-    if entity.isnumeric():
-        entity = int(entity)
-    return await legend.get_entity(entity)
-
+from Legendbot.helpers.functions import chat_vc_checker, get_group_call, parse_entity
 
 @legend.legend_cmd(
     pattern="vcstart",
